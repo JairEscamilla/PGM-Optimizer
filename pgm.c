@@ -70,12 +70,14 @@ void menu(){
       default:
         printf("Ingresa una opcion valida!\n");
     }
-    NuevoNombre(NuevoNombreA);
+    if(opcion >= 1 && opcion<= 4)
+      NuevoNombre(NuevoNombreA);
     if(opcion == 1 || opcion == 2)
       guardar(Matriz, Ancho, Alto, NuevoNombreA);
     else
-      guardar(Matriz2, Ancho, Alto, NuevoNombreA);
-    printf("El proceso ha sido completado!\n");
+      if(opcion == 3 || opcion == 4)
+        guardar(Matriz2, Ancho, Alto, NuevoNombreA);
+    printf("El proceso ha terminado\n");
   }else{
     printf("No se ha podido abrir tu archivo, vuelve a intentarlo):\n");
   }
