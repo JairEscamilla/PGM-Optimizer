@@ -12,6 +12,8 @@ void cargarArchivo(char[], int, int, int*[]);
 void guardar(int**, int, int, char[]);
 void negativo(int**, int, int);
 void NuevoNombre(char[]);
+void ecualizar(int**, int, int);
+void obtenerEcuacion(int**, int, int , float*, float*);
 // Funcion principal
 int main(){
   desplegarDatos();
@@ -53,7 +55,7 @@ void menu(){
         negativo(Matriz, Ancho, Alto);
         break;
       case 2:
-        printf("Ecualizar\n");
+        ecualizar(Matriz, Ancho, Alto);
         break;
       case 3:
         printf("Reducir\n");
@@ -121,6 +123,33 @@ void negativo(int** Matriz, int Ancho, int Alto){
       Matriz[i][j] = Matriz[i][j]*(-1)+255;
     }
   }
+}
+void ecualizar(int** Matriz, int Ancho, int Alto){
+  float m, b;
+  obtenerEcuacion(Matriz, Ancho, Alto, &m, &b);
+  for(int i = 0; i < Alto; i++){
+    for(int j = 0; j < Ancho; j++){
+      Matriz[i][j] = (m)*(Matriz[i][j])+b;
+    }
+  }
+}
+void obtenerEcuacion(int** Matriz, int Ancho, int Alto, float* m,float* b){
+    int  mayor, menor;
+    float mm, bb;
+    mayor = Matriz[0][0];
+    menor = Matriz[0][0];
+    for(int i = 0; i < Alto; i++){
+      for(int j = 0; j < Ancho; j++){
+        if(Matriz[i][j] > mayor)
+          mayor = Matriz[i][j];
+        if(Matriz[i][j] < menor)
+          menor = Matriz[i][j];
+      }
+    }
+    mm = (255)/(mayor - menor);
+    bb = 255 - (mm*mayor);
+    *m = mm;
+    *b = bb;
 }
 void NuevoNombre(char Name[]){
   printf("Ingresar nuevo nombre del archivo: ");
