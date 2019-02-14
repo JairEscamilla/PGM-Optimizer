@@ -29,7 +29,7 @@ void menu(){
   PedirArchivo(NombreArchivo);
   ValidarArchivo(NombreArchivo, &validacion);
   if (validacion == 0) {
-    obtenerDimensiones(NombreArchivo, *Ancho, *Alto);
+    obtenerDimensiones(NombreArchivo, &Ancho, &Alto);
   }else{
     printf("No se ha podido abrir tu archivo, vuelve a intentarlo):\n");
   }
@@ -46,4 +46,12 @@ void ValidarArchivo(char Nombre[], int* Validacion){
     *Validacion = 0;
     fclose(Archivo);
   }
+}
+void obtenerDimensiones(char Nombre[], int* Ancho, int* Alto){
+  FILE* Archivo = fopen(Nombre, "rb");
+  int Dato1, Dato2;
+  char Encabezado;
+  fscanf(Archivo, "%c%d %d %d %d", &Encabezado, &Dato1, Ancho, Alto, &Dato2);
+  printf("%d * %d\n", *Ancho, *Alto);
+  fclose(Archivo);
 }
