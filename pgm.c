@@ -14,6 +14,7 @@ void negativo(int**, int, int);
 void NuevoNombre(char[]);
 void ecualizar(int**, int, int);
 void obtenerEcuacion(int**, int, int , float*, float*);
+void reducir(int**, int*, int*, int**);
 // Funcion principal
 int main(){
   desplegarDatos();
@@ -30,7 +31,7 @@ void desplegarDatos(){
 }
 
 void menu(){
-  int opcion = 0, validacion, Ancho, Alto, **Matriz;
+  int opcion = 0, validacion, Ancho, Alto, **Matriz, **Matriz2;
   char NombreArchivo[200], NuevoNombreA[200];
   PedirArchivo(NombreArchivo);
   ValidarArchivo(NombreArchivo, &validacion);
@@ -40,6 +41,9 @@ void menu(){
     Matriz = (int**)malloc(Alto*sizeof(int*)); // Columnas
     for(int i = 0; i < Alto; i++)
       Matriz[i] = (int*)malloc(Ancho*sizeof(int)); // Filas
+    Matriz2 = (int**)malloc(Alto*sizeof(int*)); // Columnas
+    for(int i = 0; i < Alto; i++)
+      Matriz2[i] = (int*)malloc(Ancho*sizeof(int)); // Filas
     // Ahora voy a cargar la imagen a la matriz
     cargarArchivo(NombreArchivo, Ancho, Alto, Matriz);
     system("clear");
@@ -58,7 +62,7 @@ void menu(){
         ecualizar(Matriz, Ancho, Alto);
         break;
       case 3:
-        printf("Reducir\n");
+        reducir(Matriz, &Ancho, &Alto, Matriz2);
         break;
       case 4:
         printf("Ampliar\n");
@@ -67,7 +71,10 @@ void menu(){
         printf("Ingresa una opcion valida!\n");
     }
     NuevoNombre(NuevoNombreA);
-    guardar(Matriz, Ancho, Alto, NuevoNombreA);
+    if(opcion == 1 || opcion == 2)
+      guardar(Matriz, Ancho, Alto, NuevoNombreA);
+    else
+      guardar(Matriz2, Ancho, Alto, NuevoNombreA);
     printf("El proceso ha sido completado!\n");
   }else{
     printf("No se ha podido abrir tu archivo, vuelve a intentarlo):\n");
@@ -150,6 +157,19 @@ void obtenerEcuacion(int** Matriz, int Ancho, int Alto, float* m,float* b){
     bb = 255 - (mm*mayor);
     *m = mm;
     *b = bb;
+}
+void reducir(int ** Matriz, int* Ancho, int* Alto, int** Matriz2){
+  int x = 0, y = 0;
+  for(int i = 0; i < *Alto; i+= 2){
+    x = 0;
+    for(int j = 0; j < *Ancho; j+= 2){
+      Matriz2[y][x] = Matriz[i][j];
+      x++;
+    }
+    y++;
+  }
+  *Alto = y;
+  *Ancho = x;
 }
 void NuevoNombre(char Name[]){
   printf("Ingresar nuevo nombre del archivo: ");
