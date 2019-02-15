@@ -15,6 +15,7 @@ void NuevoNombre(char[]);
 void ecualizar(int**, int, int);
 void obtenerEcuacion(int**, int, int , float*, float*);
 void reducir(int**, int*, int*, int**);
+void ampliar(int**, int*, int*, int**);
 // Funcion principal
 int main(){
   desplegarDatos();
@@ -31,7 +32,7 @@ void desplegarDatos(){
 }
 
 void menu(){
-  int opcion = 0, validacion, Ancho, Alto, **Matriz, **Matriz2;
+  int opcion = 0, validacion, Ancho, Alto, **Matriz, **Matriz2, **Matriz3, Ancho2, Alto2;
   char NombreArchivo[200], NuevoNombreA[200];
   PedirArchivo(NombreArchivo);
   ValidarArchivo(NombreArchivo, &validacion);
@@ -44,6 +45,11 @@ void menu(){
     Matriz2 = (int**)malloc(Alto*sizeof(int*)); // Columnas
     for(int i = 0; i < Alto; i++)
       Matriz2[i] = (int*)malloc(Ancho*sizeof(int)); // Filas
+    Ancho2 = Ancho*2;
+    Alto2 = Alto*2;
+    Matriz3 = (int**)malloc(Alto2*sizeof(int*)); // Columnas
+    for(int i = 0; i < Alto2; i++)
+      Matriz3[i] = (int*)malloc(Ancho2*sizeof(int)); // Filas
     // Ahora voy a cargar la imagen a la matriz
     cargarArchivo(NombreArchivo, Ancho, Alto, Matriz);
     system("clear");
@@ -65,7 +71,7 @@ void menu(){
         reducir(Matriz, &Ancho, &Alto, Matriz2);
         break;
       case 4:
-        printf("Ampliar\n");
+        ampliar(Matriz, &Ancho, &Alto, Matriz3);
         break;
       default:
         printf("Ingresa una opcion valida!\n");
@@ -74,9 +80,12 @@ void menu(){
       NuevoNombre(NuevoNombreA);
     if(opcion == 1 || opcion == 2)
       guardar(Matriz, Ancho, Alto, NuevoNombreA);
-    else
-      if(opcion == 3 || opcion == 4)
+    else{
+      if(opcion == 3)
         guardar(Matriz2, Ancho, Alto, NuevoNombreA);
+      if(opcion == 4)
+        guardar(Matriz3, Ancho, Alto, NuevoNombreA);
+    }
     printf("El proceso ha terminado\n");
   }else{
     printf("No se ha podido abrir tu archivo, vuelve a intentarlo):\n");
@@ -172,6 +181,31 @@ void reducir(int ** Matriz, int* Ancho, int* Alto, int** Matriz2){
   }
   *Alto = y;
   *Ancho = x;
+}
+void ampliar(int** Matriz, int* Ancho, int* Alto, int** Matriz3){
+  int h = 0, k = 0, i, j;
+  for( i = 0; i < *Alto; i++){
+    k = 0;
+    for( j = 0; j < *Ancho; j++){
+      Matriz3[h][k] = Matriz[i][j];
+      if (k % 2 != 0) {
+        Matriz3[h][k] = Matriz[i][j-1];
+        k++;
+      }else
+      k++;
+    }
+    if(h % 2 != 0){
+      for(int l = 0; l < *Ancho; l++){
+        Matriz3[h+1][l] = Matriz[i-1][l];
+      }
+      h++;
+    }
+    h++;
+  }
+  *Ancho = k;
+  *Alto = h;
+  printf("%d %d\n ", *Alto, *Ancho);
+  printf("%d %d", i, j);
 }
 void NuevoNombre(char Name[]){
   printf("Ingresar nuevo nombre del archivo: ");
