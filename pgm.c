@@ -188,19 +188,22 @@ void ampliar(int** Matriz, int* Ancho, int* Alto, int** Matriz3){
     k = 0;
     for( j = 0; j < *Ancho; j++){
       Matriz3[h][k] = Matriz[i][j];
-      if (k % 2 != 0) {
-        Matriz3[h][k] = Matriz[i][j-1];
-        k++;
-      }else
       k++;
+      if (k % 2 == 0) {
+        Matriz3[h][k] = Matriz[i][j];
+        k++;
+      }
+
     }
-    if(h % 2 != 0){
-      for(int l = 0; l < *Ancho; l++){
-        Matriz3[h+1][l] = Matriz[i-1][l];
+
+    h++;
+    if(h % 2 == 0){
+      for(int l = 0; l < (*Ancho)*2-1; l++){
+        Matriz3[h][l] = Matriz3[h-1][l];
       }
       h++;
     }
-    h++;
+
   }
   *Ancho = k;
   *Alto = h;
