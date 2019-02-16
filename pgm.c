@@ -16,6 +16,7 @@ void ecualizar(int**, int, int);
 void obtenerEcuacion(int**, int, int , float*, float*);
 void reducir(int**, int*, int*, int**);
 void ampliar(int**, int*, int*, int**);
+void liberarMemoria(int**, int, int);
 // Funcion principal
 int main(){
   desplegarDatos();
@@ -90,6 +91,9 @@ void menu(){
   }else{
     printf("No se ha podido abrir tu archivo, vuelve a intentarlo):\n");
   }
+  liberarMemoria(Matriz, Ancho, Alto);
+  liberarMemoria(Matriz2, Ancho, Alto);
+  liberarMemoria(Matriz3, Ancho*2, Alto*2);
 }
 void PedirArchivo(char Nombre[]){
   printf("Ingresar nombre del archivo a procesar: ");
@@ -111,7 +115,6 @@ void obtenerDimensiones(char Nombre[], int* Ancho, int* Alto){
   fscanf(Archivo, "%c%d %d %d %d", &Encabezado, &Dato1, Ancho, Alto, &Dato2);
   fclose(Archivo);
 }
-
 void cargarArchivo(char Nombre[], int Ancho, int Alto, int* Matriz[]){
   FILE* Archivo =  fopen(Nombre, "rb");
   unsigned char prueba;
@@ -195,7 +198,6 @@ void ampliar(int** Matriz, int* Ancho, int* Alto, int** Matriz3){
       }
 
     }
-
     h++;
     if(h % 2 == 0){
       for(int l = 0; l < (*Ancho)*2-1; l++){
@@ -207,11 +209,14 @@ void ampliar(int** Matriz, int* Ancho, int* Alto, int** Matriz3){
   }
   *Ancho = k;
   *Alto = h;
-  printf("%d %d\n ", *Alto, *Ancho);
-  printf("%d %d", i, j);
 }
 void NuevoNombre(char Name[]){
   printf("Ingresar nuevo nombre del archivo: ");
   __fpurge(stdin);
   gets(Name);
+}
+void liberarMemoria(int** Matriz, int Ancho, int Alto){
+  for(int i = 0; i < Alto; i++)
+    free(Matriz[i]);// Filas
+  free(Matriz); // Columnas
 }
