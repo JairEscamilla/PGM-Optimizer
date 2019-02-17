@@ -87,13 +87,19 @@ void menu(){
       if(opcion == 4)
         guardar(Matriz3, Ancho, Alto, NuevoNombreA);
     }
+      if(opcion == 4){
+        liberarMemoria(Matriz, Ancho/2, Alto/2);
+        liberarMemoria(Matriz2, Ancho/2, Alto/2);
+      }else{
+        liberarMemoria(Matriz, Ancho, Alto);
+        liberarMemoria(Matriz2, Ancho, Alto);
+      }
+      liberarMemoria(Matriz3, Ancho2, Alto2);
+
     printf("El proceso ha terminado\n");
   }else{
     printf("No se ha podido abrir tu archivo, vuelve a intentarlo):\n");
   }
-  liberarMemoria(Matriz, Ancho, Alto);
-  liberarMemoria(Matriz2, Ancho, Alto);
-  liberarMemoria(Matriz3, Ancho*2, Alto*2);
 }
 void PedirArchivo(char Nombre[]){
   printf("Ingresar nombre del archivo a procesar: ");
